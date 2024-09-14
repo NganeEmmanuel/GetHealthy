@@ -1,14 +1,14 @@
 import React from 'react';
-import { FlatList, StyleSheet, View} from 'react-native';
+import { FlatList, ScrollView, StyleSheet, View} from 'react-native';
 import PartialRecordsDetailsScreen from './PartialRecordsDetailsScreen';
 import Colors from '../../Utils/Colors';
 
 const ShowRecordsScreen = ({ records, onRecordPress }) => {
   return (
-    <View>
+    <ScrollView>
       {records? <FlatList
         data={records}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item?.id?.toString()}
         renderItem={({ item }) => (
           <PartialRecordsDetailsScreen 
             record={item} 
@@ -20,7 +20,7 @@ const ShowRecordsScreen = ({ records, onRecordPress }) => {
         :
           <Text style={styles.noRecords}>You have no records yet Add Records to view</Text>
     }
-    </View>
+    </ScrollView>
   );
 };
 

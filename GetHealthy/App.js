@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator, LogBox } from 'react-native';
 import { useFonts } from 'expo-font';
 import { NavigationContainer } from '@react-navigation/native';
 import AuthNavigation from './Components/Screens/NavigationScreen/AuthNavigation';  // Stack navigator for Login/Signup
@@ -7,16 +7,21 @@ import TabNavigation from './Components/Screens/NavigationScreen/TabNavigation';
 import GlobalAPI from './Components/Utils/GlobalAPI';
 import { AuthProvider, useAuth } from './Components/Screens/AuthenticationScreen/AuthProvider';
 
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']); //remove this when you want to debug this error
 function AppContent() {
   const { isAuthenticated, setIsAuthenticated } = useAuth();
 
   useEffect(() => {
     const authenticateUser = () => {
       try {
-        const userData = GlobalAPI.authenticateUser(); // authenticate user
-        setIsAuthenticated(true)
+        const userData = GlobalAPI.authenticateUser().then(resp => {
+          if(resp != 'success'){ return}
+          setIsAuthenticated(true)
+        }).catch(err => {
+
+        }); // authenticate user
       } catch (error) {
-        console.error('Error authenticating user:', error);
+        console.log('Error authenticating user:', error);
       }
     };
 

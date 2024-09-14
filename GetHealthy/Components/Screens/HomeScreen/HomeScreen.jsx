@@ -36,7 +36,7 @@ export default function HomeScreen({ navigation }) {
   useEffect(() => {
     fetchUserData();
     getIlnnesRecordsForUser();
-  }, []);
+  }, [illnessRecords]);
 
 
   return (

@@ -27,7 +27,7 @@ const signup = async (data) => {
     if (response.status >= 200 && response.status < 300) {
       const authToken = response.data.token;
       await SecureStore.setItemAsync('authToken', authToken);
-      return 'Signup successful';
+      return 'successful';
     } else {
       throw new Error(`Signup failed with status code: ${response.status}`);
     }
@@ -49,7 +49,7 @@ const login = async (data) => {
     if (response.status >= 200 && response.status < 300) {
       const authToken = response.data.token;
       await SecureStore.setItemAsync('authToken', authToken);
-      return 'Login successful';
+      return 'succes';
     } else {
       throw new Error(`Login failed with status code: ${response.status}`);
     }
@@ -165,7 +165,7 @@ const geteventsByRecordID = async (recordID) => {
     }
   };
 
-  // Function to add event to the database
+// Function to add event to the database
 const addEvent = async (data) => {
     try {
       const authToken = await getAuthToken();
@@ -190,6 +190,33 @@ const addEvent = async (data) => {
       return error.message;
     }
   };
+
+
+  // Function to add illness rtecord to the database
+const addRecord = async (data) => {
+    try {
+      const authToken = await getAuthToken();
+  
+      if (!authToken) {
+        throw new Error('No authentication token found');
+      }
+  
+      const response = await axios.post(`${masterUrl}/illness-record-service/api/v1/illnesses/illness/add`, data, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+        },
+      });
+  
+      if (response.status >= 200 && response.status < 300) {
+        return response.data; // Return the user data
+      } else {
+        throw new Error(`Failed to add event with status code: ${response.status}`);
+      }
+    } catch (error) {
+      console.error(`Error adding event`, error);
+      return error.message;
+    }
+  };
   
 
 export default {
@@ -199,5 +226,6 @@ export default {
   authenticateUser,
   getIllnessRecordsForUser,
   geteventsByRecordID,
-  addEvent
+  addEvent,
+  addRecord
 }

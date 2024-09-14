@@ -5,8 +5,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import HomeNavigation from './HomeNavigation';
 import Colors from '../../Utils/Colors';
 import { FontAwesome5 } from '@expo/vector-icons';
-import AddRecordsScreen from '../RecordsScreen/AddRecordsScreen';
 import ProfileScreen from '../ProfileScreen/ProfileScreen';
+import RecordsNavigation from './RecordsNavigation';
 
 const Tab = createBottomTabNavigator();
 export default function TabNavigation() {
@@ -25,7 +25,7 @@ export default function TabNavigation() {
             )
         }}
         />
-        <Tab.Screen name='records' component={AddRecordsScreen} options={{
+        <Tab.Screen name='records' component={RecordsNavigation} options={{
             tabBarLabel: ({color}) =>(
                 <Text style={{color:color, fontSize:12, marginTop: -7 }}>Add Records</Text>
             ),

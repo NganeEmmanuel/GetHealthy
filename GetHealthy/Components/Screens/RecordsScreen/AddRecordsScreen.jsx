@@ -6,6 +6,7 @@ import Toast from 'react-native-toast-message';
 import Colors from '../../Utils/Colors';
 import { useNavigation } from '@react-navigation/native';
 import { format } from 'date-fns';
+import GlobalAPI from '../../Utils/GlobalAPI';
 
 export default function AddRecordsScreen() {
   const [name, setName] = useState('');
@@ -21,8 +22,8 @@ export default function AddRecordsScreen() {
   // For dropdown state
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState([
-    { label: 'Ongoing', value: 'Ongoing' },
-    { label: 'Ended', value: 'Ended' }
+    { label: 'Ongoing', value: 'ONGOING' },
+    { label: 'Ended', value: 'ENDED' }
   ]);
 
   const handleConfirmDate = (date) => {
@@ -61,18 +62,16 @@ export default function AddRecordsScreen() {
       illnessStatus: status,
       illnessLocation: location
     }
-    console.log(recordData)
-
-    return;
-    // Simulate a network request
-    GlobalAPI.addEvent(recordData).then(resp => {
+    
+    GlobalAPI.addRecord(recordData).then(resp => {
       Toast.show({
           type: 'success',
           text1: 'Success',
           text2: 'record added successfully!',
         });
-        clearForm()
+        // clearForm()
         setLoading(false)
+        navigation.push('recordDetails', {record: resp})
 
   }).catch(err => {
       Toast.show({
