@@ -43,7 +43,8 @@ export default function HomeScreen({ navigation }) {
     <View style={styles.container}>
       <HeaderScreen
         fullName={user ? user?.name : 'John Doe'} // Display user's full name if available
-        onRecordsPress={() => navigation.navigate('Records')}
+        onRecordsPress={() => navigation.navigate('records')}
+        onProfilePress={() => navigation.navigate('Profile')}
       />
       <ShowRecordsScreen 
         records={illnessRecords} 

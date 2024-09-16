@@ -14,8 +14,8 @@ export default function EventCard({ title, type, location, status, description, 
       <TouchableOpacity onPress={onEventPress} style={styles.eventContainer}>
         <View style={{ borderBottomWidth: 1, borderColor: '#ddd', padding: 20 }}>
           <Text style={styles.eventTitle}>{title}</Text>
-          <Text style={styles.otherText}>Type: {type}</Text>
-          <Text style={styles.otherText}>Location: {location}</Text>
+          {type&&<Text style={styles.otherText}>Type: {type}</Text>}
+          {location&&<Text style={styles.otherText}>Location: {location}</Text>}
           <Text style={styles.otherText}>Start: {startDate}</Text>
           <Text style={styles.otherText}>
             {truncatedDescription}

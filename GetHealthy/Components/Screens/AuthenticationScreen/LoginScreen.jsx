@@ -24,13 +24,17 @@ export default function LoginScreen({ navigation }) {
     setLoading(true);
 
     try {
-      const response = await GlobalAPI.login({ username, password });
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Login successful!',
-      });
-      login(); // Update authentication state
+      const response = await GlobalAPI.login({ username, password })
+      .then(resp => {
+        if(resp != 'success') throw new Error("Authentication failed, please try again")
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Login successful!',
+        });
+
+        login(); // Update authentication state
+      })
     } catch (error) {
       Toast.show({
         type: 'error',

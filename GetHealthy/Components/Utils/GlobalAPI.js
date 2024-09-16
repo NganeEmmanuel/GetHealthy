@@ -27,12 +27,12 @@ const signup = async (data) => {
     if (response.status >= 200 && response.status < 300) {
       const authToken = response.data.token;
       await SecureStore.setItemAsync('authToken', authToken);
-      return 'successful';
+      return 'success';
     } else {
       throw new Error(`Signup failed with status code: ${response.status}`);
     }
   } catch (error) {
-    console.error('Signup error:', error);
+    console.log('Signup error:', error);
     return error.message;
   }
 }
@@ -49,12 +49,12 @@ const login = async (data) => {
     if (response.status >= 200 && response.status < 300) {
       const authToken = response.data.token;
       await SecureStore.setItemAsync('authToken', authToken);
-      return 'succes';
+      return 'success';
     } else {
       throw new Error(`Login failed with status code: ${response.status}`);
     }
   } catch (error) {
-    console.error('Login error:', error);
+    console.log('Login error:', error);
     return error.message;
   }
 }
@@ -80,7 +80,7 @@ const getLoggedInUser = async () => {
       throw new Error(`Failed to retrieve user data with status code: ${response.status}`);
     }
   } catch (error) {
-    console.error('Error fetching logged-in user data:', error);
+    console.log('Error fetching logged-in user data:', error);
     return error.message;
   }
 }
@@ -107,7 +107,7 @@ const authenticateUser = async () => {
         throw new Error(`Failed to authenticate user with status code: ${response.status}`);
       }
     } catch (error) {
-      console.error('Error authenticating user data:', error);
+      console.log('Error authenticating user data:', error);
       return error.message;
     }
   };
@@ -133,7 +133,7 @@ const getIllnessRecordsForUser = async (data) => {
         throw new Error(`Failed to get illness recordswith status code: ${response.status}`);
       }
     } catch (error) {
-      console.error('Error getting illness records data:', error);
+      console.log('Error getting illness records data:', error);
       return error.message;
     }
   };
@@ -160,7 +160,7 @@ const geteventsByRecordID = async (recordID) => {
         throw new Error(`Failed to get events for recordID: ${recordID} with status code: ${response.status}`);
       }
     } catch (error) {
-      console.error(`Error getting events for recordID: ${recordID}:`, error);
+      console.log(`Error getting events for recordID: ${recordID}:`, error);
       return error.message;
     }
   };
@@ -186,13 +186,13 @@ const addEvent = async (data) => {
         throw new Error(`Failed to add event with status code: ${response.status}`);
       }
     } catch (error) {
-      console.error(`Error adding event`, error);
+      console.log(`Error adding event`, error);
       return error.message;
     }
   };
 
 
-  // Function to add illness rtecord to the database
+// Function to add illness rtecord to the database
 const addRecord = async (data) => {
     try {
       const authToken = await getAuthToken();
@@ -213,10 +213,38 @@ const addRecord = async (data) => {
         throw new Error(`Failed to add event with status code: ${response.status}`);
       }
     } catch (error) {
-      console.error(`Error adding event`, error);
+      console.log(`Error adding event`, error);
       return error.message;
     }
   };
+
+    // Function to add illness rtecord to the database
+const SearchAll = async (term) => {
+  try {
+    const authToken = await getAuthToken();
+
+    if (!authToken) {
+      throw new Error('No authentication token found');
+    }
+
+    const response = await axios.post(`${masterUrl}/search-service/api/v1/search/all?term=${term}`, {}, {
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+      },
+    });
+
+    if (response.status >= 200 && response.status < 300) {
+      return response.data; // Return the user data
+    } else {
+      throw new Error(`Failed to get records matching the term: (${term}) with status code: ${response.status}`);
+    }
+  } catch (error) {
+    console.error(`Error searching records and event`, error);
+    return error.message;
+  }
+};
+
+
   
 
 export default {
@@ -227,5 +255,6 @@ export default {
   getIllnessRecordsForUser,
   geteventsByRecordID,
   addEvent,
-  addRecord
+  addRecord,
+  SearchAll
 }

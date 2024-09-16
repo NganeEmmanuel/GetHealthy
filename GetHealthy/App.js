@@ -15,18 +15,20 @@ function AppContent() {
     const authenticateUser = () => {
       try {
         const userData = GlobalAPI.authenticateUser().then(resp => {
-          if(resp != 'success'){ return}
+          if(resp != true){ return }
           setIsAuthenticated(true)
         }).catch(err => {
-
+          return ;
         }); // authenticate user
       } catch (error) {
         console.log('Error authenticating user:', error);
+        return ;
       }
     };
 
     authenticateUser();
   }, [])
+
   const [fontsLoaded] = useFonts({
     'outfit': require('./assets/fonts/Outfit-Regular.ttf'),
     'outfit-medium': require('./assets/fonts/Outfit-Medium.ttf'),

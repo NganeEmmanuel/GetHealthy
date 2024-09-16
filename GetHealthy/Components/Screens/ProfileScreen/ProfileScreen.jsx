@@ -2,14 +2,16 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome, Feather, MaterialIcons } from '@expo/vector-icons';
 import Colors from '../../Utils/Colors'; // Assuming you have a Colors utility
+import { useAuth } from '../AuthenticationScreen/AuthProvider';
+import * as SecureStore from 'expo-secure-store';
 
 export default function ProfileScreen({ navigation }) {
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
 
   const handleSignOut = () => {
-    // Handle sign out logic here (add actual functionality later)
-    console.log('User signed out');
-    // Navigate to login screen after sign out
-    navigation.replace('Login');
+    SecureStore.setItemAsync('authToken', '');
+    setIsAuthenticated(false)
+    // navigation.replace('Login');
   };
 
   return (
@@ -39,11 +41,6 @@ export default function ProfileScreen({ navigation }) {
           <Text style={styles.detailText}>Joined on Jan 15, 2024</Text>
         </View>
       </View>
-
-      {/* Edit Profile Button */}
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Edit Profile</Text>
-      </TouchableOpacity>
 
       {/* Sign Out Button */}
       <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>

@@ -2,19 +2,21 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, TextInput, Keyboard } from 'react-native';
 import { FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 import Colors from '../../Utils/Colors';
+import { useNavigation } from '@react-navigation/native';
 
-const HeaderScreen = ({ fullName, onRecordsPress, onSearch }) => {
+const HeaderScreen = ({ fullName, onRecordsPress, onProfilePress, onSearch }) => {
   const [searchText, setSearchText] = useState('');
+  const navigation = useNavigation()
 
   const handleSearch = () => {
-    onSearch(searchText);
     Keyboard.dismiss(); // Dismiss the keyboard after search
+    navigation.push('search', searchText)
   };
 
   return (
     <View style={{backgroundColor: Colors.PRIMARY, paddingBottom: 10, elevation: 10}}>
       <View style={styles.headerContainer}>
-        <FontAwesome name="user-circle" size={55} color={Colors.WHITE} style={styles.profileIcon} />
+        <FontAwesome name="user-circle" size={55} color={Colors.WHITE} style={styles.profileIcon} onPress={onProfilePress}/>
         <View style={styles.textContainer}>
           <Text style={styles.welcomeText}>Welcome</Text>
           <Text style={styles.fullName}>{fullName}</Text>
@@ -29,7 +31,7 @@ const HeaderScreen = ({ fullName, onRecordsPress, onSearch }) => {
         <TextInput
           style={styles.searchInput}
           placeholder="Search records..."
-          placeholderTextColor={Colors.LIGHT_GREY}
+          placeholderTextColor={Colors.GREY}
           value={searchText}
           onChangeText={setSearchText}
           onSubmitEditing={handleSearch} // Trigger search on 'Enter' key

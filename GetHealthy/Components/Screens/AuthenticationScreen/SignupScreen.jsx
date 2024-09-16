@@ -37,13 +37,16 @@ export default function SignupScreen({ navigation }) {
     setLoading(true);
 
     try {
-      await GlobalApi.signup({ name, username, email, password });
-      Toast.show({
-        type: 'success',
-        text1: 'Success',
-        text2: 'Signup successful!',
-      });
-      setIsAuthenticated(true); // Update authentication state
+      await GlobalApi.signup({ name, username, email, password })
+      .then(resp => {
+        if(resp != 'success') throw new Error("Authentication failed, please try again")
+        Toast.show({
+          type: 'success',
+          text1: 'Success',
+          text2: 'Signup successful!',
+        });
+        setIsAuthenticated(true); // Update authentication state
+      })
     } catch (err) {
       Toast.show({
         type: 'error',
