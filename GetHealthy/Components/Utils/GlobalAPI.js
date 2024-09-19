@@ -244,6 +244,90 @@ const SearchAll = async (term) => {
   }
 };
 
+// Function to delete event from tha database
+const dealetEvent = async (id) => {
+  try {
+    const authToken = await getAuthToken();
+
+    if (!authToken) {
+      throw new Error('No authentication token found');
+    }
+    
+    const response = await axios.delete(`${masterUrl}/event-service/api/v1/events/event/delete?id=${id}`, {
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+      },
+    });
+
+    if (response.status >= 200 && response.status < 300) {
+      return response.data; // Return the user data
+    } else {
+      throw new Error(`Failed to delete event with id: ${id} and with status code: ${response.status}`);
+    }
+  } catch (error) {
+    console.error(`Error event event`, error);
+    return error.message;
+  }
+};
+
+/**
+ * 
+ * @param {*} record record object to update the database with
+ * @returns updated record
+ */
+const editRecord = async (record) => {
+  try {
+    const authToken = await getAuthToken();
+
+    if (!authToken) {
+      throw new Error('No authentication token found');
+    }
+
+    const response = await axios.put(`${masterUrl}/illness-record-service/api/v1/illnesses/illness/update`, record, {
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+      },
+    });
+
+    if (response.status >= 200 && response.status < 300) {
+      return response.data; // Return the user data
+    } else {
+      throw new Error(`Failed to update record with data: ${record}. Failed with status code: ${response.status}`);
+    }
+  } catch (error) {
+    console.error(`Error updating record`, error);
+    return error.message;
+  }
+};
+
+// Function to add illness rtecord to the database
+const deleteRecord = async (id) => {
+  try {
+    const authToken = await getAuthToken();
+
+    if (!authToken) {
+      throw new Error('No authentication token found');
+    }
+    
+    const response = await axios.delete(`${masterUrl}/illness-record-service/api/v1/illnesses/illness/delete?id=${id}`, {
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+      },
+
+      data: {}
+    });
+
+    if (response.status >= 200 && response.status < 300) {
+      return response.data; // Return the user data
+    } else {
+      throw new Error(`Failed to delete recod with id: ${id}. Failed with status code: ${response.status}`);
+    }
+  } catch (error) {
+    console.error(`Error deleting record`, error);
+    return error.message;
+  }
+};
+
 
   
 
@@ -256,5 +340,8 @@ export default {
   geteventsByRecordID,
   addEvent,
   addRecord,
-  SearchAll
+  SearchAll,
+  dealetEvent,
+  editRecord,
+  deleteRecord
 }

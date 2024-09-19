@@ -1,48 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FontAwesome, Feather, MaterialIcons } from '@expo/vector-icons';
-import Colors from '../../Utils/Colors'; // Assuming you have a Colors utility
+import Colors from '../../Utils/Colors';
 import { useAuth } from '../AuthenticationScreen/AuthProvider';
 import * as SecureStore from 'expo-secure-store';
 
 export default function ProfileScreen({ navigation }) {
   const { isAuthenticated, setIsAuthenticated } = useAuth();
+  const [user, setUser] = useState(null); // Initialize user as null
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        const userData = await SecureStore.getItemAsync('userData'); // Get user data from SecureStore
+        if (userData) {
+          setUser(JSON.parse(userData)); // Parse and set user data
+        }
+      } catch (error) {
+        console.error('Error loading user data:', error);
+      }
+    };
+
+    loadUserData(); // Call the function to load user data when the component mounts
+  }, []); // Empty dependency array to ensure it only runs once on mount
 
   const handleSignOut = () => {
     SecureStore.setItemAsync('authToken', '');
-    setIsAuthenticated(false)
-    // navigation.replace('Login');
+    setIsAuthenticated(false);
   };
 
   return (
     <View style={styles.container}>
-      {/* Profile Picture */}
       <View style={styles.profileHeader}>
         <Image
-          source={{ uri: 'https://via.placeholder.com/150' }} // Replace with user's profile image URL if available
+          source={{ uri: user?.profileImage || 'https://via.placeholder.com/150' }} // Use user's profile image or placeholder
           style={styles.profileImage}
         />
-        <Text style={styles.profileName}>John Doe</Text>
-        <Text style={styles.profileUsername}>@johndoe</Text>
+        <Text style={styles.profileName}>{user?.name || 'John Doe'}</Text>
+        <Text style={styles.profileUsername}>@{user?.username || 'johndoe'}</Text>
       </View>
 
-      {/* Profile Details */}
       <View style={styles.profileDetails}>
         <View style={styles.row}>
           <FontAwesome name="envelope" size={20} color={Colors.DARK_GREY} />
-          <Text style={styles.detailText}>johndoe@example.com</Text>
+          <Text style={styles.detailText}>{user?.email || 'johndoe@example.com'}</Text>
         </View>
         <View style={styles.row}>
           <Feather name="map-pin" size={20} color={Colors.DARK_GREY} />
-          <Text style={styles.detailText}>New York, USA</Text>
-        </View>
-        <View style={styles.row}>
-          <MaterialIcons name="date-range" size={20} color={Colors.DARK_GREY} />
-          <Text style={styles.detailText}>Joined on Jan 15, 2024</Text>
+          <Text style={styles.detailText}>{user?.location || 'Cameroon'}</Text>
         </View>
       </View>
 
-      {/* Sign Out Button */}
       <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
         <Text style={styles.signOutText}>Sign Out</Text>
       </TouchableOpacity>

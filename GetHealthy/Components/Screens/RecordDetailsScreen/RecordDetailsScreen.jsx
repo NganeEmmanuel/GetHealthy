@@ -19,15 +19,37 @@ export default function RecordDetailsScreen({ navigation }) {
   const param = useRoute().params;
   const scrollY = useRef(new Animated.Value(0)).current;
 
+  const handleDeleteEvent = (id) => {
+    GlobalAPI.dealetEvent(id).then(resp => {
+      if(!resp){
+        throw new Error('Failed to delete event Please try again')
+      }
+
+      closeModal()
+
+    }).catch(err => {
+      //toat android message here
+    })
+  }
+
   const getEventsByRecordID = () => {
     GlobalAPI.geteventsByRecordID(param?.record?.id)
       .then((resp) => {
-        setEvents(resp);
-        setLoading(false);
+        if(Array.isArray(resp) && resp.length > 0){
+          setEvents(resp);
+          setLoading(false);
+        }else if(Array.isArray(resp) && resp.length == 0){
+          setEvents(resp);
+          setLoading(false);
+        }else{
+          setLoading(false);
+          return
+        }
       })
       .catch((err) => {
         // Add toast message for errors
         setLoading(false);
+        return
       });
   };
 
@@ -84,7 +106,7 @@ export default function RecordDetailsScreen({ navigation }) {
           isVisible={isModalVisible}
           event={selectedEvent}
           onClose={closeModal}
-          onDelete={() => console.log('Delete action')}
+          onDelete={handleDeleteEvent}
         />
       )}
 

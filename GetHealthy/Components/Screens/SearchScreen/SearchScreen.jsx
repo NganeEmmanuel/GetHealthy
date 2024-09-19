@@ -36,7 +36,6 @@ export default function SearchScreen() {
 
         setLoading(true)
         GlobalAPI.SearchAll(term).then(resp => {
-            console.log(resp)
             setResults(resp)
             setLoading(false)
         }).catch(err => {

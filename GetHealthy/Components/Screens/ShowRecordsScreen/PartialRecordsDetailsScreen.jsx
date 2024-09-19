@@ -2,9 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Colors from '../../Utils/Colors';
 
-const PartialRecordsDetailsScreen = ({ record, onPress }) => {
+const PartialRecordsDetailsScreen = ({ record, onPress, onLongPress }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} onLongPress={onLongPress}>
       <View style={styles.card}>
         <Text style={styles.recordHeading}>{record.illnessName}</Text>
         {record?.illnessStatus  == 'ONGOING'&&<View style={styles.statusContainerOngoing}>

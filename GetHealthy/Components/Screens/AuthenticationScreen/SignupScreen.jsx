@@ -12,7 +12,7 @@ export default function SignupScreen({ navigation }) {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { setIsAuthenticated } = useAuth(); // Get setIsAuthenticated from AuthContext
+  const { setIsAuthenticated, login } = useAuth(); // Get setIsAuthenticated from AuthContext
 
   const slideAnim = useRef(new Animated.Value(-500)).current; // Slide in animation
 
@@ -45,7 +45,7 @@ export default function SignupScreen({ navigation }) {
           text1: 'Success',
           text2: 'Signup successful!',
         });
-        setIsAuthenticated(true); // Update authentication state
+        login();// Update authentication state
       })
     } catch (err) {
       Toast.show({

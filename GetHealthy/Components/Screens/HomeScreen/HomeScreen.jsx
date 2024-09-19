@@ -4,6 +4,8 @@ import HeaderScreen from '../HeaderScreen/HeaderScreen';
 import ShowRecordsScreen from '../ShowRecordsScreen/ShowRecordsScreen';
 import GlobalAPI from '../../Utils/GlobalAPI'; // Import the API functions
 import * as SecureStore from 'expo-secure-store';
+import Colors from '../../Utils/Colors';
+import Toast from 'react-native-toast-message';
 
 export default function HomeScreen({ navigation }) {
   const [user, setUser] = useState(null); // State to store user data
@@ -26,12 +28,22 @@ export default function HomeScreen({ navigation }) {
   const getIlnnesRecordsForUser = async () => {
     try {
       const recordData = await GlobalAPI.getIllnessRecordsForUser().then(resp => {
-        setIllnessRecords(resp)
-      }); 
+        // Check if resp is an array and has data
+        if (Array.isArray(resp) && resp.length > 0) {
+          setIllnessRecords(resp);
+        } else if(Array.isArray(resp) && resp.length == 0){
+          setIllnessRecords(resp);
+        } else {
+          return;
+        }
+      }).catch(error => {
+        return;
+      });
     } catch (error) {
       console.error('Error getting illness records:', error);
     }
   };
+  
 
   useEffect(() => {
     fetchUserData();
@@ -46,10 +58,19 @@ export default function HomeScreen({ navigation }) {
         onRecordsPress={() => navigation.navigate('records')}
         onProfilePress={() => navigation.navigate('Profile')}
       />
-      <ShowRecordsScreen 
-        records={illnessRecords} 
-        onRecordPress={(record) => navigation.navigate('recordDetails', { record })} 
-      />
+
+      {
+        illnessRecords.length > 0?
+          <ShowRecordsScreen 
+            records={illnessRecords} 
+            onRecordPress={(record) => navigation.navigate('recordDetails', { record })} 
+          />
+        : 
+
+        <Text style={{color: Colors.GREY, marginTop: 50, textAlign: 'center'}}>No record to display please add record</Text>
+      }
+
+      <Toast />
     </View>
   );
 };

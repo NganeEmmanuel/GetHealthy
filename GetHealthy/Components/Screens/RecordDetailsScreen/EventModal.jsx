@@ -5,6 +5,7 @@ import Modal from 'react-native-modal';
 import Colors from '../../Utils/Colors';
 
 export default function EventModal({ isVisible, event, onClose, onDelete }) {
+
   return (
     <Modal isVisible={isVisible} onBackdropPress={onClose}>
       <View style={styles.modalContent}>
@@ -18,15 +19,15 @@ export default function EventModal({ isVisible, event, onClose, onDelete }) {
         
         {/* Body */}
         <ScrollView style={styles.modalBody}>
-          <Text>Type: {event.type}</Text>
+          <Text>Type: {event?.type? event.type : event?.eventType}</Text>
           <Text>Location: {event.location}</Text>
-          <Text>Status: {event.status}</Text>
+          <Text>Status: {event?.status? event?.status : event?.healthStatus}</Text>
           <Text>{event.description}</Text>
         </ScrollView>
 
         {/* Footer */}
         <View style={styles.modalFooter}>
-          <TouchableOpacity onPress={onDelete} style={styles.deleteButton}>
+          <TouchableOpacity onPress={() => onDelete(event?.id)} style={styles.deleteButton}>
             <Text style={styles.buttonText}>Delete</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={onClose} style={styles.closeButton}>
