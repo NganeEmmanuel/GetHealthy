@@ -116,6 +116,25 @@ export default function SearchScreen() {
                 <FontAwesome5 name="search" size={20} color={Colors.PRIMARY_LIGHT} />
                 </TouchableOpacity>
             </View>
+
+            {/* filter section  */}
+            <View style={styles.filterContainer}>
+              <View style={styles.resultSection}>
+                <Text style={styles.filterText}>{searchResults.length > 0? `${searchResults.length} Results `: ''}</Text>
+              </View>
+              <View style={styles.filterSection}>
+                <Text style={styles.filterText}>Filter By: </Text>
+                <TouchableOpacity style={selectedFilter === 'illness_record'? styles.filterBtn : styles.filterBtnSelected} onPress={() => handleFilter('ILLNESS_RECORD', 'illness_record')}>
+                  <Text style={selectedFilter === 'illness_record'? styles.filterBtnText : styles.filterBtnTextSelected}>Records</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={selectedFilter === 'event'? styles.filterBtn : styles.filterBtnSelected} onPress={() => handleFilter('EVENT', 'event')}>
+                  <Text style={selectedFilter === 'event'? styles.filterBtnText : styles.filterBtnTextSelected}>Events</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={selectedFilter === 'none'? styles.filterBtn : styles.filterBtnSelected} onPress={() => handleFilter('none', 'none')}>
+                  <Text style={selectedFilter === 'none'? styles.filterBtnText : styles.filterBtnTextSelected}>None</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
         </View>
 
         <ScrollView style={{ paddingHorizontal: 16 }}>
