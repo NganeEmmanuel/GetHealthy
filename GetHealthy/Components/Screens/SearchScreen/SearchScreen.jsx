@@ -17,6 +17,8 @@ export default function SearchScreen() {
     const [searchResults, setResults] = useState([])
     const [selectedEvent, setSelectedEvent] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [filter, setFilter] = useState('none')
+    const [selectedFilter, setSelectedFilter] = useState('none')
 
     const param = useRoute().params;
 
