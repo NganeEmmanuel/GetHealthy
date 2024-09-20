@@ -50,6 +50,11 @@ export default function SearchScreen() {
         })
     };
 
+    const handleFilter = (value, selectedValue) => {
+      setFilter(value)
+      setSelectedFilter(selectedValue)
+    }
+
     /**
      * Handles the senario where the click is on a result that is an illness record
      * @param {*} recordResult result from the search whci is from the record database
