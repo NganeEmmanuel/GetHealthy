@@ -147,6 +147,8 @@ export default function SearchScreen() {
                 status={result?.status}
                 description={result?.description}
                 startDate={result?.dateStarted}
+                source={result?.source}
+                filter={filter}
                 onEventPress={result?.source === 'EVENT'?() => handleEventClick(result): () => handleRecordClick(result)}
               />
             ))
